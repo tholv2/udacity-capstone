@@ -20,3 +20,9 @@ You will find below how to configure the environment and run the application.
 
 ## Infra
 * To create the cluster run `create_eks_cluster.sh`
+
+### Built With
+
+- [Circle CI](www.circleci.com) - Cloud-based CI/CD service
+- [Amazon AWS](https://aws.amazon.com/) - Cloud services
+- [AWS CLI](https://aws.amazon.com/cli/) - Command-line tool for AWS

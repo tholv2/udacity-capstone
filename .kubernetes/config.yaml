@@ -32,7 +32,7 @@ metadata:
   name: udacity-capstone-svc
 spec:
   selector:
-    app: udacity-project-app
+    app: udacity-capstone-app
   ports:
     - protocol: TCP
       port: 80
