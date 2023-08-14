@@ -48,7 +48,7 @@ jobs:
       - run:
           name: Install kubectl
           command: |
-            curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.1/2023-04-19/bin/darwin/amd64/kubectl
+            curl -O curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/darwin/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
       - run:
@@ -64,7 +64,6 @@ jobs:
           command: |
             kubectl apply -f .kubernetes/config.yaml
             kubectl get pod
-
 workflows:
   default:
     jobs:
@@ -73,5 +72,5 @@ workflows:
           requires: [install-dependencies]
       - docker-image:
           requires: [lint-source]
-      # - deploy:
-      #     requires: [build-and-push-docker-image]
+      - deploy:
+          requires: [docker-image]
