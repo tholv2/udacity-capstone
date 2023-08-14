@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   install-dependencies:
     docker:
-      - image: circleci/node:18.0.0
+      - image: circleci/node:latest
     steps:
       - checkout
       - restore_cache:
@@ -18,7 +18,7 @@ jobs:
 
   lint-source:
     docker:
-      - image: circleci/node:18.0.0
+      - image: circleci/node:latest
     steps:
       - checkout
       - restore_cache:
