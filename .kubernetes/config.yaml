@@ -5,7 +5,7 @@ metadata:
   labels:
     app: udacity-capstone-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: udacity-capstone-app
@@ -20,7 +20,10 @@ spec:
           image: tholv2/udacity-capstone:CIRCLE_SHA1
           ports:
             - containerPort: 80
-
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
 ---
 
 apiVersion: v1

@@ -54,11 +54,13 @@ jobs:
       - run:
           name: Connect to cluster
           command: |
+            aws sts get-caller-identity
             aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $CLUSTER_NAME
       - run:
           name: Update image in templace
           command: |
             sed -i 's/CIRCLE_SHA1/${CIRCLE_SHA1}/g' .kubernetes/config.yaml
+            cat .kubernetes/config.yaml
       - run:
           name: Deploy
           command: |
