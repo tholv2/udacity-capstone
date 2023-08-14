@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Update image in templace
           command: |
-            sed -i 's/CIRCLE_SHA1/${CIRCLE_SHA1}/g' .kubernetes/config.yaml
+            sed -i 's/CIRCLE_SHA1/'"$CIRCLE_SHA1"'/g' .kubernetes/config.yaml
             cat .kubernetes/config.yaml
       - run:
           name: Deploy
