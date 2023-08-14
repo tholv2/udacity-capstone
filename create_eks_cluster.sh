@@ -1,0 +1,1 @@
+eksctl create cluster --name=udacity-capstone --nodes=2 --node-type=t2.micro

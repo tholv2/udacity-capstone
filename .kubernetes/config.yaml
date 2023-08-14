@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udacity-capstone-deployment
+  labels:
+    app: udacity-capstone-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udacity-capstone-app
+  template:
+    metadata:
+      labels:
+        app: udacity-capstone-app
+    spec:
+      containers:
+        - name: nodejs-app
+          imagePullPolicy: Always
+          image: tholv2/udacity-capstone:CIRCLE_SHA1
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: udacity-capstone-svc
+spec:
+  selector:
+    app: udacity-project-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer

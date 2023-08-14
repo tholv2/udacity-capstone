@@ -1,0 +1,81 @@
+version: 2.1
+
+# orbs:
+#   docker: circleci/docker@1.5.0
+
+jobs:
+  install-dependencies:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [cache-install]
+      - run:
+          name: Dependencies install
+          command: |
+            cd frontend
+            npm i
+      - save_cache:
+          paths: [cache/node_modules]
+          key: cache-install
+
+  lint-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [cache-install]
+      - run:
+          name: Linting source
+          command: |
+             npm i
+             npm run lint          
+  docker-image:
+    docker:
+      - image: docker:23.0.6
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build -t tholv2/udacity-capstone:${CIRCLE_SHA1} .
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            docker push tholv2/udacity-capstone:${CIRCLE_SHA1}
+  deploy:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install kubectl
+          command: |
+            curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.1/2023-04-19/bin/darwin/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+      - run:
+          name: Connect to cluster
+          command: |
+            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $CLUSTER_NAME
+      - run:
+          name: Update image in templace
+          command: |
+            sed -i 's/CIRCLE_SHA1/${CIRCLE_SHA1}/g' .kubernetes/config.yaml
+      - run:
+          name: Deploy
+          command: |
+            kubectl apply -f .kubernetes/config.yaml
+            kubectl get pod
+
+workflows:
+  default:
+    jobs:
+      - install-frontend-dependencies
+      - lint-frontend:
+          requires: [install-frontend-dependencies]
+      - build-and-push-docker-image:
+          requires: [lint-frontend]
+      - deploy:
+          requires: [build-and-push-docker-image]
