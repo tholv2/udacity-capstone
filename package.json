@@ -1,0 +1,12 @@
+{
+  "name": "udacity-capstone",
+  "version": "1.0.0",
+  "description": "Capstone",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ThoLV2",
+  "license": "ISC"
+}
