@@ -50,7 +50,7 @@ jobs:
           command: |
             curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/darwin/amd64/kubectl
             chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
+            mv ./kubectl /usr/local/bin/kubectl
       - run:
           name: Connect to cluster
           command: |
