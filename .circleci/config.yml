@@ -20,7 +20,7 @@ jobs:
           paths: [cache/node_modules]
           key: cache-install
 
-  lint-frontend:
+  lint-source:
     docker:
       - image: circleci/node:13.8.0
     steps:
@@ -72,10 +72,10 @@ jobs:
 workflows:
   default:
     jobs:
-      - install-frontend-dependencies
-      - lint-frontend:
+      - install-dependencies
+      - lint-source:
           requires: [install-frontend-dependencies]
-      - build-and-push-docker-image:
-          requires: [lint-frontend]
-      - deploy:
-          requires: [build-and-push-docker-image]
+      # - docker-image:
+      #     requires: [lint-source]
+      # - deploy:
+      #     requires: [build-and-push-docker-image]
